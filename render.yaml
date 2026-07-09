@@ -1,0 +1,12 @@
+services:
+  - name: pocketbase
+    type: web
+    env: docker
+    dockerfilePath: ./Dockerfile
+    disk:
+      name: pb-data
+      mountPath: /pb/pb_data
+      sizeGB: 1
+    envVars:
+      - key: PORT
+        value: 8090
