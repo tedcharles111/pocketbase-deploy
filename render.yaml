@@ -1,5 +1,5 @@
 services:
-  - name: pocketbase
+  - name: pocketbase-deploy
     type: web
     env: docker
     dockerfilePath: ./Dockerfile
@@ -7,6 +7,3 @@ services:
       name: pb-data
       mountPath: /pb/pb_data
       sizeGB: 1
-    envVars:
-      - key: PORT
-        value: 8090
