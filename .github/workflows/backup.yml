@@ -1,0 +1,24 @@
+name: Hourly PocketBase Backup
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download live PocketBase data
+        run: |
+          # Replace with your actual PocketBase URL
+          curl -s -o /tmp/pb_data.zip https://pocketbase-deploy-t2nw.onrender.com/api/backup/export?token=ADMIN_TOKEN
+          unzip -o /tmp/pb_data.zip -d pb_data
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name github-actions
+          git config user.email actions@github.com
+          git add pb_data
+          git diff --staged --quiet || (git commit -m "Hourly backup" && git push)
