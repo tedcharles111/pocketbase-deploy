@@ -1,8 +1,20 @@
 FROM alpine:3.19
-COPY pocketbase /usr/local/bin/pocketbase
-RUN chmod +x /usr/local/bin/pocketbase
-COPY restore-pb.sh /app/restore-pb.sh
-RUN chmod +x /app/restore-pb.sh
-COPY pb_data /app/pb_data_seed
+
+RUN apk add --no-cache ca-certificates curl unzip bash
+
+# Install Litestream
+RUN curl -L https://github.com/benbjohnson/litestream/releases/download/v0.3.9/litestream-v0.3.9-linux-amd64.tar.gz -o /tmp/litestream.tar.gz \
+    && tar -C /usr/local/bin -xzf /tmp/litestream.tar.gz \
+    && rm /tmp/litestream.tar.gz
+
+# Copy your existing PocketBase binary
+COPY pocketbase /pb/pocketbase
+RUN chmod +x /pb/pocketbase
+
+# Copy Litestream config and startup script
+COPY litestream.yml /etc/litestream.yml
+COPY run.sh /pb/run.sh
+RUN chmod +x /pb/run.sh
+
 EXPOSE 8090
-CMD ["/app/restore-pb.sh"]
+CMD ["/pb/run.sh"]

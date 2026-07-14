@@ -1,0 +1,9 @@
+dbs:
+  - path: /pb/pb_data/data.db
+    replicas:
+      - type: s3
+        bucket: "my-pocketbase-backup"       # your bucket name
+        endpoint: "https://s3.us-midwest-1.idrivee2.com"
+        region: "us-midwest-1"
+        access-key-id: "HH59zqBqdj2Kf3Tv318W"
+        secret-access-key: "XjEunRQyWp6Bfdrv3J6LfdksB9BS0x5N47OHbL6C"
