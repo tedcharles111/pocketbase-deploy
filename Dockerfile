@@ -1,8 +1,10 @@
-FROM alpine:3.19
+FROM debian:bullseye-slim
 
-RUN apk add --no-cache ca-certificates curl unzip bash
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates curl unzip bash \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Litestream and make it executable
+# Install Litestream (glibc binary, compatible with Debian)
 RUN curl -L https://github.com/benbjohnson/litestream/releases/download/v0.3.9/litestream-v0.3.9-linux-amd64.tar.gz -o /tmp/litestream.tar.gz \
     && tar -C /usr/local/bin -xzf /tmp/litestream.tar.gz \
     && chmod +x /usr/local/bin/litestream \
